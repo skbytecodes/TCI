@@ -1,5 +1,9 @@
 package com.tci.serviceImpl;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.tci.dto.CurrencyData;
+import com.tci.dto.EmployeeBonusResponse;
+import com.tci.dto.EmployeeResponse;
 import com.tci.dto.Employees;
 import com.tci.entity.Department;
 import com.tci.entity.Employee;
@@ -11,9 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDate;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -61,7 +65,37 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee getEmployeeById(Long empId) {
-        return null;
+    public EmployeeBonusResponse employeeBonus(String date) throws JsonParseException {
+        var employeeBonusResponse = new EmployeeBonusResponse();
+        LocalDate localDate = LocalDateParser.stringToLocalDate(date);
+        List<Employee> activeEmployees = employeeRepo.findActiveEmployees(localDate);
+
+        Map<String, List<Employee>> groupedAndSortedEmployees = activeEmployees.stream()
+                .collect(Collectors.groupingBy(Employee::getCurrency,
+                        Collectors.mapping(e -> e,
+                                Collectors.toList())));
+
+
+        // Sort each group by employee name in ascending order
+        groupedAndSortedEmployees.forEach((currency, empList) ->
+                empList.sort(Comparator.comparing(Employee::getEmpName)));
+
+        var data = new ArrayList<CurrencyData>();
+        groupedAndSortedEmployees.forEach((currency, empList) -> {
+            List<EmployeeResponse> empRes = empList.stream().map(item -> {
+                var employeeResponse = new EmployeeResponse();
+                employeeResponse.setEmpName(item.getEmpName());
+                employeeResponse.setAmount(item.getAmount());
+                return employeeResponse;
+            }).toList();
+            var currencyData = new CurrencyData();
+            currencyData.setCurrency(currency);
+            currencyData.setEmployees(empRes);
+
+            data.add(currencyData);
+        });
+        employeeBonusResponse.setData(data);
+        return  employeeBonusResponse;
     }
+
 }
