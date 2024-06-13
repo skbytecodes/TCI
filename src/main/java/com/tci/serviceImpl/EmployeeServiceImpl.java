@@ -68,6 +68,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public EmployeeBonusResponse employeeBonus(String date) throws JsonParseException {
         var employeeBonusResponse = new EmployeeBonusResponse();
         LocalDate localDate = LocalDateParser.stringToLocalDate(date);
+        //active employees are those who are currently working with the organisation
         List<Employee> activeEmployees = employeeRepo.findActiveEmployees(localDate);
 
         Map<String, List<Employee>> groupedAndSortedEmployees = activeEmployees.stream()
@@ -76,7 +77,6 @@ public class EmployeeServiceImpl implements EmployeeService {
                                 Collectors.toList())));
 
 
-        // Sort each group by employee name in ascending order
         groupedAndSortedEmployees.forEach((currency, empList) ->
                 empList.sort(Comparator.comparing(Employee::getEmpName)));
 
@@ -94,6 +94,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
             data.add(currencyData);
         });
+        employeeBonusResponse.setErrorMessage("");
         employeeBonusResponse.setData(data);
         return  employeeBonusResponse;
     }
