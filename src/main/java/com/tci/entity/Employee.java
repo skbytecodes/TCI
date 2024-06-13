@@ -2,6 +2,7 @@ package com.tci.entity;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -13,8 +14,8 @@ public class Employee {
     private String empName;
     private Double amount;
     private String currency;
-    private LocalDateTime joiningDate;
-    private LocalDateTime exitDate;
+    private LocalDate joiningDate;
+    private LocalDate exitDate;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(
@@ -55,19 +56,19 @@ public class Employee {
         this.currency = currency;
     }
 
-    public LocalDateTime getJoiningDate() {
+    public LocalDate getJoiningDate() {
         return joiningDate;
     }
 
-    public void setJoiningDate(LocalDateTime joiningDate) {
+    public void setJoiningDate(LocalDate joiningDate) {
         this.joiningDate = joiningDate;
     }
 
-    public LocalDateTime getExitDate() {
+    public LocalDate getExitDate() {
         return exitDate;
     }
 
-    public void setExitDate(LocalDateTime exitDate) {
+    public void setExitDate(LocalDate exitDate) {
         this.exitDate = exitDate;
     }
 

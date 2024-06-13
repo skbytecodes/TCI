@@ -1,17 +1,13 @@
 package com.tci.dto;
 
-import com.tci.entity.Department;
-
-import java.time.LocalDateTime;
-
 public class EmployeeRequest{
 
     private String empName;
     private Double amount;
     private String currency;
-    private LocalDateTime joiningDate;
-    private LocalDateTime exitDate;
-    private Department department;
+    private String joiningDate;
+    private String exitDate;
+    private String department;
 
     public String getEmpName() {
         return empName;
@@ -37,27 +33,27 @@ public class EmployeeRequest{
         this.currency = currency;
     }
 
-    public LocalDateTime getJoiningDate() {
+    public String getJoiningDate() {
         return joiningDate;
     }
 
-    public void setJoiningDate(LocalDateTime joiningDate) {
+    public void setJoiningDate(String joiningDate) {
         this.joiningDate = joiningDate;
     }
 
-    public LocalDateTime getExitDate() {
+    public String getExitDate() {
         return exitDate;
     }
 
-    public void setExitDate(LocalDateTime exitDate) {
+    public void setExitDate(String exitDate) {
         this.exitDate = exitDate;
     }
 
-    public Department getDepartment() {
+    public String getDepartment() {
         return department;
     }
 
-    public void setDepartment(Department department) {
+    public void setDepartment(String department) {
         this.department = department;
     }
 

@@ -1,7 +1,7 @@
 package com.tci.controller;
 
 
-import com.tci.dto.EmployeeRequest;
+import com.tci.dto.Employees;
 import com.tci.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,9 +19,9 @@ public class EmployeeController {
     private EmployeeService employeeService;
 
     @PostMapping("/")
-    public ResponseEntity<?> createEmployee(@RequestBody EmployeeRequest employeeRequest){
+    public ResponseEntity<?> createEmployee(@RequestBody Employees employees){
         try {
-            employeeService.createEmployee(employeeRequest);
+            employeeService.createEmployees(employees);
             return new ResponseEntity<>("CREATED", HttpStatus.CREATED);
         }catch (IllegalStateException e){
             return new ResponseEntity<>("BAD REQUEST", HttpStatus.BAD_REQUEST);
